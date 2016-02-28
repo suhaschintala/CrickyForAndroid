@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head>
+    <link rel="shortcut icon" href="img/favicon.jpg" />
+    <title>CRICKY</title>
+    <script src="js/angular.min.js"></script>
+    <script src='js/socket.io.js'></script>
+    <link rel="stylesheet" type="text/css" href="css/mystyle.css">
+    <link rel='stylesheet' href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body ng-controller='myCtrl' background='{{bgimg}}'>
+    <header>
+        <img src="img/logo9.png" height="130px" />
+    </header>
+
+    <div class="mainbody"><br><br>
+        <!--ng-hide="isReg".... should be-->
+        <div class="init_reg" ng-hide="isReg" align='center' class="col-xs-6">
+            <!-- <div id="reg_tab" > <h2 id="reg_tab_c">Register here </h2></div> --><br>
+            <div id="user_entry"><h3 id="user_entry_c">Username </h3><input type='text' ng-model='username'> </div><br>
+            <div class="reg_button_class"><button class="btn btn-info" ng-click='register_me()'>REGISTER </button></div>
+        </div>
+
+
+
+        <div class="game_options"  ng-show='isGameOp' align='center' >
+                <div id="game_options_choice"><div id="game_options_c">Choose one of them:</div></div><br>
+                <button class="btn btn-info" ng-click='single_player()'>Play with bots</button><br><br>
+                <button class="btn btn-info" ng-click='show_games()'>Join game</button><br><br>
+                <button class="btn btn-info" ng-click='show_create_game_menu()'>Host game</button><br></br>
+        </div>
+
+
+
+
+        <!--ng-show='isSinglePlayer' -->
+<!--         <div  align='center' class="single_player" ng-show='isSinglePlayer'>
+                <table>
+                        <tr>
+                                <td>Team A</td>
+                                <td>Team B</td>
+                        </tr>
+                        <tr>
+                                <td>YOU</td>
+                                <td>COMPUTER</td>
+                        </tr>
+                </table>
+        </div> -->
+
+
+
+        <div id="join_game" ng-show="showRunningGames" align="center">
+            <h2> YOU CAN JOIN ANY OF THE FOLLOWING GAMES </h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Game Id</th>
+                        <th>Game Host</th>
+                        <th>Size Stat</th>
+                        <th>Join</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="game in games">
+                        <td>{{game.id}}</td>
+                        <td>{{game.host}}</td>
+                        <td>{{game.curr_size}}/{{game.max_size}}</td>
+                        <td><button ng-click="join_game(game.id)">Join</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button ng-click="show_games()">Refresh</button>
+<!--             <ul>
+                <li ng-repeat="game in games">
+                    {{game.id}} :: {{game.host}} :: {{game.curr_size}}/{{game.max_size}}
+                    <button ng-click="join_game(game.id)">Join</button>
+                </li>
+            </ul> -->
+        </div>
+
+
+        <div id="host_game" ng-show="showCreateGameMenu" align="centre">
+            <input type="text" class="form-control" ng-model="max_size" placeholder="Enter maximum team size">
+            <div style="align:centre">
+                <button class="btn btn-default btn-info" style="" ng-click="create_game()">host game</button>
+            </div>
+        </div>
+
+        <div class="score_card" ng-show="showScoreCard">
+            <table class="table table-bordered one">
+                <thead>
+                    <tr>
+                        <th>Team A</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="player in gameObj.teamA.players">
+                        <td>{{player.name}}</td>
+                        <td>{{player.batting_score}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <th>{{gameObj.teamA.score}}</th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered two">
+                <thead>
+                    <tr>
+                        <th>Team B</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="player in gameObj.teamB.players">
+                        <td>{{player.name}}</td>
+                        <td>{{player.batting_score}}</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <th>{{gameObj.teamB.score}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+         <!-- simple stats should work for single,multi -->
+        <div class="simple_stats jumbotron" ng-show="isGameStarted" style="background-color:#ffffff">
+            <div id="simple_status_heading">
+                Current Status
+            </div>
+            <div class="gen_data">
+                <div>
+                    <div class="col-xs-6"> SCORE - {{score}}/{{wickets}}</div>
+                    <div class="col-xs-6">OVERS - {{overs}}</div><br>
+                </div>
+               <div>
+                    <div class="col-xs-6">BATSMAN - {{current_batsmen}}</div>
+                    <div class="col-xs-6">BOWLER  - {{current_bowler}}</div>
+               </div>
+               <div>
+                   <div class="col-xs-12" ng-hide="gameObj.isFirstInnings">TARGET - {{target}}</div>
+                   <div class="col-xs-12" ng-hide="gameObj.isFirstInnings">REQUIRED RUNS - {{required_runs}}</div>
+               </div>
+            </div>
+        </div>
+<!--  -->
+
+<!-- scorecard working -->
+
+<!--  -->
+
+        <div class="waiting_div" ng-show="showWaiting">
+            <p style="float:left">Waiting for host to START the game...........</p>
+            <button class="btn btn-info" ng-click="leaveRoom()" style="float:left" >Leave the room</button>
+        </div>
+
+        <div class="startGameButton" ng-show="showStartButtonHost" align="center">
+            <button class="btn btn-info" ng-click="startGame()">Start Game</button>
+            <br><br>
+        </div>
+
+        <div class="clickToJoin" ng-show="showClickToJoin">
+            <button ng-click="joinGame()">Join Game</button>
+            {{time_out}}
+        </div>
+
+        <div class="counter_stats well well-sm" ng-show="isCounter" >
+            <div id="counter_head">COUNTER </div>
+            <div id="counter_num">{{counter}}</div>
+            <!-- <button ng-click="startTimer()">click</button> -->
+        </div>
+
+        <div class="hand_comparision" ng-show="isGameStarted"><!-- handCmp -->
+            <div class="col-xs-6" id="player1_hand">
+                {{current_batsmen}}<br>
+                {{temp_bat_number}}
+            </div>
+            <div class="col-xs-6" id="player2_hand">
+                {{current_bowler}}<br>
+                {{temp_bowl_number}}
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="batting" align="center" ng-show="c_batting">
+            <div class="gameController">
+                <button class="game_ctrl img-rnd" ng-click='bat(1)'><img src="img/b1.jpg" class="bat_but"/></button>
+                <button class="game_ctrl " ng-click='bat(2)'><img src="img/b2.jpg" class="bat_but"/></button>
+                <button class="game_ctrl " ng-click='bat(3)'><img src="img/b3.jpg" class="bat_but"/></button><br>
+                <button class="game_ctrl " ng-click='bat(4)'><img src="img/b4.jpg" class="bat_but"/></button>
+                <button class="game_ctrl " ng-click='bat(5)'><img src="img/b5.jpg" class="bat_but"/></button>
+                <button class="game_ctrl " ng-click='bat(6)'><img src="img/b6.jpg" class="bat_but"/></button>
+            </div>
+        </div>
+        <div class="bowling" align="center" ng-show="c_bowling">
+            <div class="gameController">
+                <button class="game_ctrl " ng-click='bowl(1)'><img src="img/b1.jpg" height="70px" width="70px"/></button>
+                <button class="game_ctrl " ng-click='bowl(2)'><img src="img/b2.jpg" height="70px" width="70px"/></button>
+                <button class="game_ctrl " ng-click='bowl(3)'><img src="img/b3.jpg" height="70px" width="70px"/></button><br>
+                <button class="game_ctrl " ng-click='bowl(4)'><img src="img/b4.jpg" height="70px" width="70px"/></button>
+                <button class="game_ctrl " ng-click='bowl(5)'><img src="img/b5.jpg" height="70px" width="70px"/></button>
+                <button class="game_ctrl " ng-click='bowl(6)'><img src="img/b6.jpg" height="70px" width="70px"/></button>
+            </div>
+        </div>
+        <div id="idle"></div>
+        <div id="game_over"></div>
+    </div>
+</body>
+<script src='js/script.js'></script>
+<script type="text/javascript" src="js/services/socket.service.js"></script>
+</html>

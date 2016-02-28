@@ -1,0 +1,147 @@
+body {
+	margin: 0px,10px,10px,0px;
+	padding :0px;
+	background-color: #282828;
+
+}
+header {
+	text-align:center;
+	height: 130px;
+	/*background-color: #282828;*/
+	width: 100%;
+}
+
+.mainbody {
+	/*background-color: #282828;*/
+	height: 100%;
+}
+
+
+
+.init_reg {
+	width: 100%;
+	height:250px;
+	/*background-color :#193947;
+	*//*margin-left:490px;*/
+	text-align: center;
+	color: white;
+	font-family: Tahoma,Geneva,sans-serif;
+
+}
+#reg_tab{
+	opacity: 1	;
+	width:100%;
+	height:60px;
+	/*background-color:#416270;*/
+	color: white;
+}
+#reg_tab_c{
+	opacity: 1;
+	color: white;
+	padding-top: 10px;
+}
+#user_entry_c{
+	opacity: 1;
+	color: black;
+}
+#user_entry{
+	opacity: 1;
+	color: black;
+}
+#reg_button{
+	/*margin-top:20px;*/
+	/*padding-top: 10px;*/
+	opacity: 1;
+	padding-bottom: 20px;
+	/*background-color:green;*/
+}
+.game_options{
+	width: 100%;
+	height:250px;
+	/*background-color :#193947;*/
+	text-align: center;
+}
+#game_options_choice{
+	width:100%;
+	height:60px;
+	margin-top: 10px;
+	/*background-color:#416270;*/
+}
+#game_options_c{
+	font-family: Tahoma,Geneva,sans-serif;
+	color:black;
+	padding-top: 10px;
+	/*font-weight: bold;*/
+	font-size: 25px;
+}
+
+.score_card{
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+
+
+
+
+#simple_status_heading {
+/*	margin-top: 10px;
+*/	text-align: center;
+	color: #1cadef;
+	font-size: 20px;
+	font-family: 'Lato', sans-serif;
+}
+
+.simple_stats {
+	text-align: center;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+table{
+	border-style: solid;
+}
+table.one{
+	float: left;
+	width: 45%;
+}
+table.two{
+	width: 45%;
+	float: right;
+}
+.hand_comparision {
+
+}
+#player1_hand,#player2_hand {
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+}
+.counter_stats{
+	text-align: center;
+}
+#counter_head{
+	font-weight: bold;
+}
+#counter_num{
+	color: red;
+	font-size: 25px;
+}
+
+.gen_data {
+	display: inline;
+	font-weight: normal;
+}
+.game_ctrl {
+	width:80px;
+	height: 80px;
+	background-color:#e35219;
+}
+.bat_but {
+	width: 100%
+
+}
+
+.gameController {
+
+}
