@@ -1,2 +1,0 @@
-# CrickyForAndroid
-PhoneGap deployed :P

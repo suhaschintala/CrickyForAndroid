@@ -14,6 +14,7 @@ angular.module('app',[])
     $scope.showCreateGameMenu = false
     $scope.showWaiting = false
     $scope.showScoreCard = false
+    $scope.showGameEnded = false
     $scope.target = 0
     $scope.handCmp = false
     $scope.bgimg = "img/cricket_ball_on_grass1.jpg"
@@ -82,6 +83,7 @@ angular.module('app',[])
         $scope.isGameStarted = false
         $scope.c_batting = false
         $scope.c_bowling = false
+        $scope.showGameEnded = true
         alert('THE GAME HAS ENDED!!')
     })
 
@@ -207,6 +209,15 @@ angular.module('app',[])
         $scope.showStartButtonHost = false;
     }
 
+    $scope.returnToMenu = function (){
+        $scope.showScoreCard = false
+        $scope.isGameStarted = false
+        $scope.c_batting = false
+        $scope.c_bowling = false
+        $scope.isGameOp = true
+        $scope.showGameEnded = false
+        $scope.gameObj = {}
+    }
 
 	$scope.bat = function(num) {
         $scope.stop()
@@ -274,6 +285,25 @@ angular.module('app',[])
         console.log($scope.gameObj)
         if($scope.gameObj.isCompleted||$scope.required_runs<=0){
             console.log("GAME OVER!!"); // GAME OVER!
+            if(tmp.score>tmp1.score){
+                if(tmp==$scope.gameObj.teamA){
+                    $scope.winner = "teamA"
+                }
+                else {
+                    $scope.winner = "teamB"
+                }
+            }
+            else if(tmp.score<tmp1.score){
+                if(tmp1==$scope.gameObj.teamA){
+                    $scope.winner = "teamA"
+                }
+                else {
+                    $scope.winner = "teamB"
+                }
+            }
+            else {
+                $scope.winner = "Draw"
+            }
             socket.emit('game_over',$scope.gameObj)
         }
         else {
