@@ -9,7 +9,7 @@ var games = []
 
 app.use(express.static(__dirname));
 io.on('connection', function (socket){
-    console.log("HEY!! I connected "+socket.id)
+    // console.log("HEY!! I connected "+socket.id)
 
     socket.on('disconnect', function () {
 
@@ -20,7 +20,7 @@ io.on('connection', function (socket){
     });
 
     socket.on('register_me', function (data){
-        console.log(data)
+        // console.log(data)
         players.push(data)
         socket.emit('registered_me', {'name':players.length-1})
     })
@@ -31,7 +31,7 @@ io.on('connection', function (socket){
     })
 
     socket.on('bat_number',function (data){
-        console.log('taka -- '+'user : '+players[data.pid])
+        // console.log('taka -- '+'user : '+players[data.pid])
         var gameObj = data.gameObj
         var number = data.number
         var curr_game = games[gameObj.id]
@@ -57,9 +57,9 @@ io.on('connection', function (socket){
     })
 
     socket.on('bowl_number', function (data){
-        console.log('tiki -- '+'user : '+players[data.pid])
-        console.log('---bowl_num---')
-        console.log(data)
+        // console.log('tiki -- '+'user : '+players[data.pid])
+        // console.log('---bowl_num---')
+        // console.log(data)
         var gameObj = data.gameObj
         var number = data.number
         var curr_game = games[data.gameObj.id]
@@ -69,8 +69,8 @@ io.on('connection', function (socket){
             io.sockets.to('ha'+gameObj.id).emit('send_gameObj', curr_game)
         }
         else {
-            console.log("hehe")
-            console.log(curr_game.teamA.players[curr_game.curr_bat].isBot+' -- '+ curr_game.isTeamABatting)
+            // console.log("hehe")
+            // console.log(curr_game.teamA.players[curr_game.curr_bat].isBot+' -- '+ curr_game.isTeamABatting)
             if(curr_game.isTeamABatting&&curr_game.teamA.players[curr_game.curr_bat].isBot){
                 rnd = Math.floor(Math.random()*6)+1
                 curr_game.bat_number = rnd
@@ -98,18 +98,18 @@ io.on('connection', function (socket){
             curr_game.bowl_number = rnd
         }
         process_curr_game_obj(gameObj.id)
-        console.log("after process")
-        console.log(curr_game)
+        // console.log("after process")
+        // console.log(curr_game)
         io.sockets.to('ha'+gameObj.id).emit('send_gameObj', curr_game)
     })
 
     socket.on('broadcast_start_game_signal', function (data){ // data is gameObj
-        console.log('--start broacast--')
-        console.log(data)
+        // console.log('--start broacast--')
+        // console.log(data)
         var curr_game = games[data.id]
         curr_game.isStarted = true
-        console.log('sending')
-        console.log(curr_game)
+        // console.log('sending')
+        // console.log(curr_game)
         io.sockets.in('ha'+data.id).emit('game_start_alert', curr_game)
     })
 
@@ -261,15 +261,15 @@ io.on('connection', function (socket){
 
         }
         games.push(game)
-        console.log(game)
+        // console.log(game)
         io.sockets.in('ha'+game.id).emit('created_single_player',game)
     })
 })
 
 function process_curr_game_obj (id) {
     var curr_game = games[id]
-    console.log("before process")
-    console.log(curr_game)
+    // console.log("before process")
+    // console.log(curr_game)
     var out_flag = false
     // before EVERY RETURN, initialize bat_number, bowl_number
     if(curr_game.isTeamABatting){
@@ -397,12 +397,12 @@ function process_curr_game_obj (id) {
     }
     curr_game.temp_bat_number = curr_game.bat_number;
     curr_game.temp_bowl_number = curr_game.bowl_number;
-    console.log('--- check ---')
-    console.log(curr_game)
+    // console.log('--- check ---')
+    // console.log(curr_game)
     curr_game.bat_number = 0
     curr_game.bowl_number = 0
-    console.log("after process")
-    console.log(curr_game)
+    // console.log("after process")
+    // console.log(curr_game)
 }
 
 /*
@@ -512,7 +512,7 @@ app.get('/games/:id/single_player', function (req,res){
 
     }
     games.push(game)
-    console.log(game)
+    //console.log(game)
     return res.json(game)
 })
 

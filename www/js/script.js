@@ -211,6 +211,8 @@ angular.module('app',[])
 
     $scope.returnToMenu = function (){
         $scope.showScoreCard = false
+        $scope.showCreateGameMenu = false
+        $scope.showRunningGames = false
         $scope.isGameStarted = false
         $scope.c_batting = false
         $scope.c_bowling = false

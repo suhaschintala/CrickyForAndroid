@@ -70,6 +70,7 @@
                 </tbody>
             </table>
             <button ng-click="show_games()">Refresh</button>
+            <button ng-click="returnToMenu()">Return to Menu</button>
 <!--             <ul>
                 <li ng-repeat="game in games">
                     {{game.id}} :: {{game.host}} :: {{game.curr_size}}/{{game.max_size}}
@@ -83,6 +84,7 @@
             <input type="text" class="form-control" ng-model="max_size" placeholder="Enter maximum team size">
             <div style="align:centre">
                 <button class="btn btn-default btn-info" style="" ng-click="create_game()">host game</button>
+                <button ng-click="returnToMenu()">Return to Menu</button>
             </div>
         </div>
 
